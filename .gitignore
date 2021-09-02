@@ -1,0 +1,4 @@
+.env
+./node_modules
+./cofig/firebaseConfig.json
+node_modules
