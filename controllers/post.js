@@ -3,6 +3,8 @@ const formidable = require("formidable");
 const admin = require("firebase-admin");
 const { v4: uuid } = require("uuid");
 const Posts = require("../models/Posts");
+const Notification = require("../models/Notification");
+const User = require("../models/Users");
 
 //Create Post
 exports.createPost = (req, res) => {
@@ -36,6 +38,7 @@ exports.createPost = (req, res) => {
 
           if (file) {
             posts.image = file.publicUrl();
+            posts.posted_by = req.profile._id;
             posts.save((err, userPost) => {
               if (err || !userPost) {
                 console.log(err);
@@ -113,30 +116,91 @@ exports.deletePost = (req, res) => {
   });
 };
 
-exports.getAllPost = (req, res) => {
-  Posts.find().exec((err, post) => {
-    if (err) {
-      res.status(400).json({
-        error: "No post found!",
+//Like Post
+exports.likePost = (req, res) => {
+  const currentPost = req.currentPost;
+  const currentUser = req.profile;
+
+  const newNotification = new Notification();
+
+  let currentDate = new Date().getDate();
+  let currentMonth = new Date().getMonth();
+  let currentYear = new Date().getFullYear();
+
+  newNotification.title = `${currentUser.name} liked your post. `;
+  newNotification.date = `${currentDate}/${currentMonth}/${currentYear} `;
+
+  currentPost.likes.addToSet(currentUser._id);
+  currentUser.likedPosts.addToSet(currentPost._id);
+
+  currentUser.save((err, data) => {
+    if (err || !data) {
+      return res.status(400).json({
+        err: "Please  Try Again",
+      });
+    }
+  });
+
+  newNotification.save((err, data) => {
+    User.findById(currentPost.posted_by._id).exec((err, userData) => {
+      if (err) {
+        console.log("Notification Not Added!");
+      }
+      console.log(userData);
+      userData.notifications.addToSet(data._id);
+      userData.save();
+    });
+
+    currentPost.save((err, data) => {
+      if (err) {
+        return res.status(400).json({
+          err: "Please  Try Again",
+        });
+      }
+    });
+  });
+};
+
+//Unlike Post
+exports.unlikePost = (req, res) => {
+  const currentPost = req.currentPost;
+  const currentUser = req.profile;
+  currentPost.likes.pull(currentUser._id);
+  currentUser.likedPosts.pull(currentPost._id);
+
+  currentPost.save((err, data) => {
+    if (err || !data) {
+      return res.status(400).json({
+        err: "Please  Try Again",
       });
     }
 
-    res.json({
-      post,
+    currentUser.save((err, data) => {
+      if (err || !data) {
+        return res.status(400).json({
+          err: "Please  Try Again",
+        });
+      }
+
+      res.status(200).json({
+        message: "Post Unliked!",
+      });
     });
   });
 };
 
 //Middleware
 exports.getPostById = (req, res, next, id) => {
-  Posts.findById(id, (err, post) => {
-    if (err || !post) {
-      return res.status(200).json({
-        err: "Post not Found In Database!",
-      });
-    }
+  Posts.findById(id)
+    .populate("posted_by", ["_id"])
+    .exec((err, post) => {
+      if (err || !post) {
+        return res.status(200).json({
+          err: "Post not Found In Database!",
+        });
+      }
 
-    req.currentPost = post;
-    next();
-  });
+      req.currentPost = post;
+      next();
+    });
 };

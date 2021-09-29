@@ -5,6 +5,8 @@ const {
   viewProfile,
   editProfile,
   deleteProfile,
+  getAllPost,
+  getAllInteractions,
 } = require("../controllers/profile");
 
 const {
@@ -19,7 +21,6 @@ const router = express.Router();
 router.param("userId", getUserById);
 
 //Routes
-
 // GET Route
 // View Profile
 router.get("/:userId/view/profile", isSignedIn, isAuthenticated, viewProfile);
@@ -35,6 +36,19 @@ router.delete(
   isSignedIn,
   isAuthenticated,
   deleteProfile
+);
+
+//GET Route
+// get all posts
+router.get("/:userId/get/post", isSignedIn, isAuthenticated, getAllPost);
+
+//GET Route
+//get all interectons
+router.get(
+  "/:userId/get/friends",
+  isSignedIn,
+  isAuthenticated,
+  getAllInteractions
 );
 
 module.exports = router;

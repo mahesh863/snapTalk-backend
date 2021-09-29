@@ -82,13 +82,16 @@ exports.acceptFollowRequest = (req, res) => {
   const senderProfile = req.friend;
   const myProfile = req.profile;
 
+  console.log("Handel Accept Request Hit");
+
   const newNotification = new Notification();
 
   let currentDate = new Date().getDate();
   let currentMonth = new Date().getMonth();
+  let currentYear = new Date().getFullYear();
 
   newNotification.title = `${myProfile.name} has accepted your follow request. `;
-  newNotification.date = `${currentDate} / ${currentMonth}`;
+  newNotification.date = `${currentDate}/${currentMonth}/${currentYear}`;
 
   newNotification.save((err, notification) => {
     if (err) {
@@ -154,6 +157,23 @@ exports.rejectFollowRequest = (req, res) => {
   res.status(200).json({
     message: "Request Rejected!",
   });
+};
+
+exports.searchFriend = (req, res) => {
+  const searchTerm = req.body.userName;
+
+  User.find({ name: searchTerm })
+    .collation({ locale: "en", strength: 2 })
+    .select(["_id", "name", "profilePic"])
+    .exec((err, users) => {
+      if (err) {
+        res.status(400).json({
+          err: "Something Went Wrong!",
+        });
+      }
+
+      res.json(users);
+    });
 };
 
 //Middleware

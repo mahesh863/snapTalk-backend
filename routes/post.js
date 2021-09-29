@@ -8,6 +8,8 @@ const {
   editPost,
   deletePost,
   getPostById,
+  likePost,
+  unlikePost,
 } = require("../controllers/post");
 const {
   getUserById,
@@ -25,6 +27,14 @@ router.delete(
   isSignedIn,
   isAuthenticated,
   deletePost
+);
+
+router.get("/like/post/:userId/:postId", isSignedIn, isAuthenticated, likePost);
+router.get(
+  "/unlike/post/:userId/:postId",
+  isSignedIn,
+  isAuthenticated,
+  unlikePost
 );
 
 module.exports = router;

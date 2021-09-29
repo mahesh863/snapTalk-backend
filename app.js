@@ -17,6 +17,8 @@ const authRoute = require("./routes/auth");
 const postRoute = require("./routes/post");
 const profileRoute = require("./routes/profile");
 const friendRoute = require("./routes/friends");
+const notificationRoute = require("./routes/notification");
+const feedsdRoute = require("./routes/feeds");
 
 // const verifyJwt = require("./config/verifyJwt");
 
@@ -33,6 +35,8 @@ app.use("/api", authRoute);
 app.use("/api", postRoute);
 app.use("/api", profileRoute);
 app.use("/api", friendRoute);
+app.use("/api", notificationRoute);
+app.use("/api", feedsdRoute);
 
 mongoose.connect(
   "mongodb://localhost:27017/snaptalk",

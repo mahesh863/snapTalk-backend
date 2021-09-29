@@ -89,6 +89,12 @@ const userSchema = new mongoose.Schema(
       type: String,
       default: "email",
     },
+    likedPosts: [
+      {
+        type: ObjectId,
+        ref: "Posts",
+      },
+    ],
   },
   { timestamps: true }
 );

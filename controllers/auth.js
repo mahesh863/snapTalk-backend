@@ -84,13 +84,7 @@ exports.signInWithEmailAndPassword = (req, res) => {
       res.status(200).json({
         message: "Login Successful!",
         token,
-        user: {
-          name,
-          email,
-          posts,
-          friends,
-          _id,
-        },
+        userId: _id,
       });
     } else {
       res.status(406).json({
@@ -126,7 +120,7 @@ exports.loginViaGoogle = (req, res) => {
 
           return res.status(200).json({
             message: "Account Login!",
-            user,
+            userId: user._id,
             token,
           });
         }
@@ -141,7 +135,7 @@ exports.loginViaGoogle = (req, res) => {
 
               return res.status(200).json({
                 message: "Account Login!",
-                user,
+                userId: user._id,
                 token,
               });
             })
@@ -152,6 +146,14 @@ exports.loginViaGoogle = (req, res) => {
       });
     })
     .catch((err) => console.log(err));
+};
+
+//Signout
+exports.signOut = (req, res) => {
+  res.clearCookie("token");
+  res.json({
+    message: "SignOut Successful",
+  });
 };
 
 // {%---------------------------------------------------------------------------------%}

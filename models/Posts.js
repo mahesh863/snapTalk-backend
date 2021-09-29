@@ -4,6 +4,10 @@ const { ObjectId } = mongoose.Schema;
 
 const postSchema = new mongoose.Schema(
   {
+    posted_by: {
+      type: ObjectId,
+      ref: "Users",
+    },
     image: {
       type: String,
       required: true,
@@ -27,7 +31,7 @@ const postSchema = new mongoose.Schema(
       },
     ],
 
-    plce: {
+    place: {
       type: String,
     },
     uploadedOn: {
