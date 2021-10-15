@@ -1,4 +1,4 @@
-# snapTalk-backend# This app has been made with Node and MongoDB
+# This app has been made with Node and MongoDB
 
 
 ## Demo
@@ -6,7 +6,7 @@ https://socialapp-5ec19.firebaseapp.com/
 
 
 ## Backend Codes Can be Found Here
-https://github.com/mahesh863/snapTalk-backend
+https://github.com/mahesh863/snapTalk-frontend
 
 
 This app is a personal project which is a basic implementation of social media app. Inspired by Instagram.
