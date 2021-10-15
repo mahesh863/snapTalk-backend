@@ -7,6 +7,7 @@ const {
   deleteProfile,
   getAllPost,
   getAllInteractions,
+  changeProfilePicture,
 } = require("../controllers/profile");
 
 const {
@@ -49,6 +50,15 @@ router.get(
   isSignedIn,
   isAuthenticated,
   getAllInteractions
+);
+
+//PUT Route
+//Change Profile Picture
+router.put(
+  "/:userId/profile/image",
+  isSignedIn,
+  isAuthenticated,
+  changeProfilePicture
 );
 
 module.exports = router;

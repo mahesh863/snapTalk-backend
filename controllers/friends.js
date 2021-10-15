@@ -10,9 +10,10 @@ exports.sendFollowRequest = (req, res) => {
 
   let currentDate = new Date().getDate();
   let currentMonth = new Date().getMonth();
+  let currentYear = new Date().getFullYear();
 
   newNotification.title = `${sender.name} has sent you a follow request. `;
-  newNotification.date = `${currentDate} / ${currentMonth}`;
+  newNotification.date = `${currentDate} / ${currentMonth}/${currentYear}`;
 
   newNotification.save((err, notification) => {
     if (err) {
@@ -173,6 +174,41 @@ exports.searchFriend = (req, res) => {
       }
 
       res.json(users);
+    });
+};
+
+exports.suggestedFriends = (req, res) => {
+  User.find()
+    .select(["_id", "name", "email", "profilePic"])
+    .limit(10)
+    .exec((err, users) => {
+      if (err) {
+        res.status(400).json({
+          err: "Something Went Wrong!",
+        });
+      }
+      res.status(200).json({
+        users,
+      });
+    });
+};
+
+exports.viewUserProfile = (req, res) => {
+  const { userId } = req.body;
+  console.log(userId);
+  User.findById(userId)
+    .select(["_id", "name", "profilePic", "posts"])
+    .populate("posts", ["_id", "image"])
+    .exec((err, user) => {
+      if (err) {
+        res.status(400).json({
+          err: "Something Went Wrong!",
+        });
+      }
+      console.log(user);
+      res.status(200).json({
+        user,
+      });
     });
 };
 

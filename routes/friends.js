@@ -13,6 +13,8 @@ const {
   acceptFollowRequest,
   rejectFollowRequest,
   searchFriend,
+  suggestedFriends,
+  viewUserProfile,
 } = require("../controllers/friends");
 
 router.param("userId", getUserById);
@@ -33,4 +35,9 @@ router.get("/reject/friend/:userId/:friendId", rejectFollowRequest);
 //Search People Route
 router.post("/search", searchFriend);
 
+//View User Profile
+router.post("/view/user", viewUserProfile);
+
+//Suggested Route
+router.get("/suggested", suggestedFriends);
 module.exports = router;

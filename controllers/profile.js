@@ -1,5 +1,8 @@
 //Models
 const User = require("../models/Users");
+const formidable = require("formidable");
+const admin = require("firebase-admin");
+const { v4: uuid } = require("uuid");
 
 //View Profile
 exports.viewProfile = (req, res) => {
@@ -100,7 +103,7 @@ exports.getAllPost = (req, res) => {
     });
 };
 
-//Get All Followers, Followings ,Sent Requests and Recieve Requests
+//Get All Followers, Followings ,Sent Requests and Recieved Requests
 exports.getAllInteractions = (req, res) => {
   const userId = req.profile._id;
 
@@ -113,12 +116,58 @@ exports.getAllInteractions = (req, res) => {
     .exec((err, user) => {
       if (err) {
         return res.status(404).json({
-          err: "Post Not Found!",
+          err: "USer Not Found!",
         });
       }
 
-      res.json({
+      res.status(200).json({
         user,
       });
     });
+};
+
+exports.changeProfilePicture = (req, res) => {
+  const newProfilePic = new formidable.IncomingForm({ keepExtensions: true });
+
+  newProfilePic.parse(req, (err, fields, files) => {
+    if (err) {
+      res.status(400).json({
+        err: "Failed To Upload!",
+      });
+    }
+
+    if (files.profileImage) {
+      let path = files.profileImage.path;
+      const options = {
+        destination: `profile/${uuid()}_${files.profileImage.name}`,
+        predefinedAcl: "publicRead",
+        validation: "crc32c",
+      };
+      admin
+        .storage()
+        .bucket()
+        .upload(path, options, (err, file, apiResponse) => {
+          if (err || !file) {
+            return res.status(400).json({
+              err: "Failed To Upload!",
+            });
+          }
+          if (file) {
+            let user = req.profile;
+            user.profilePic = file.publicUrl();
+            user.save((err, user) => {
+              if (err || !user) {
+                console.log(err);
+                res.status(400).json({
+                  err: "Sorry Something Went Wrong!",
+                });
+              }
+              res.status(200).json({
+                message: "Profile Picture Changed!",
+              });
+            });
+          }
+        });
+    }
+  });
 };

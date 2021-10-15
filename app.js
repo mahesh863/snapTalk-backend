@@ -20,9 +20,9 @@ const friendRoute = require("./routes/friends");
 const notificationRoute = require("./routes/notification");
 const feedsdRoute = require("./routes/feeds");
 
-// const verifyJwt = require("./config/verifyJwt");
-
 const app = express();
+
+const port = process.env.PORT || 8000;
 
 admin.initializeApp(firebaseConfig);
 app.use(cors());
@@ -39,7 +39,7 @@ app.use("/api", notificationRoute);
 app.use("/api", feedsdRoute);
 
 mongoose.connect(
-  "mongodb://localhost:27017/snaptalk",
+  "http:url",
   {
     useNewUrlParser: true,
     useUnifiedTopology: true,
@@ -53,6 +53,6 @@ mongoose.connect(
   }
 );
 
-app.listen(8000, () => {
+app.listen(port, () => {
   console.log(">>> App is running at port 8000");
 });
