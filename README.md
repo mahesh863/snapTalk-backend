@@ -27,22 +27,22 @@ This app is a personal project which is a basic implementation of social media a
 
 ## Routes
 
-1. Authentication
+#### Authentication
   1. POST : /auth/signup - To Create an account.
   2. POST : /auth/signin - To Authenticate a user.
   3. GET : /signout - To Signout A User.
 
-2. Feeds
+#### Feeds
 
 
   1. GET:  /feeds/generate/:userId - To generate user feeds based on followers.
 
-3. Notification
+#### Notification
 
   1 GET:  /:userId/all/notification  - To get User Notifications.
   
   
-4. Posts
+#### Posts
 
   1. POST :  /create/post/:userId - Create Post.
   2. PUT : /edit/post/:userId/:postId - Edit Post.
@@ -51,7 +51,7 @@ This app is a personal project which is a basic implementation of social media a
   5. GET : /unlike/post/:userId/:postId - Unlike A Post.
 
 
-5. My Profile
+#### My Profile
 
   1. GET : /:userId/view/profile - View Profile.
   2. PUT : /:userId/edit/profile - Edit Profile.
@@ -60,7 +60,7 @@ This app is a personal project which is a basic implementation of social media a
   5. GET : /:userId/get/friends - Get My followers and following.
   6. PUT : /:userId/profile/image - Change Profile Picture.
 
-6. Followers and Following
+#### Followers and Following
 
   1. GET :  /add/friend/:userId/:friendId  - Send Follow Request.
   2. GET : /delete/friend/:userId/:friendId - Delete Follow Request.
