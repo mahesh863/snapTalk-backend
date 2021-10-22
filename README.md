@@ -1,6 +1,11 @@
 # This app has been made with Node and MongoDB
 
 
+
+## Architecture
+![alt text](https://github.com/mahesh863/snapTalk-backend/blob/master/Snaptalk.drawio(1).png)
+
+
 ## Demo
 https://socialapp-5ec19.firebaseapp.com/
 
