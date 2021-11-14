@@ -6,10 +6,6 @@
 ![alt text](https://github.com/mahesh863/snapTalk-backend/blob/master/Snaptalk.drawio(1).png)
 
 
-## Demo
-https://socialapp-5ec19.firebaseapp.com/
-
-
 ## Frontend Codes Can be Found Here
 https://github.com/mahesh863/snapTalk-frontend
 
